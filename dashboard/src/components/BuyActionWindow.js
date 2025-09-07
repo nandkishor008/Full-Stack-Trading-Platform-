@@ -20,7 +20,7 @@ const BuyActionWindow = ({ uid }) => {
       
 
       await axios.post(
-        "http://localhost:3002/api/newOrder",
+        "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/newOrder",
         {
           name: uid,
           qty: Number(stockQuantity),

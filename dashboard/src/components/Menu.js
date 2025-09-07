@@ -11,9 +11,12 @@ const Menu = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:3002/me", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/me",
+          {
+            withCredentials: true,
+          }
+        );
         setUser(res.data);
       } catch (err) {
         console.error("Not authenticated:", err);
@@ -34,11 +37,11 @@ const Menu = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:3002/api/logout",
+        "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/logout",
         {},
         { withCredentials: true }
       );
-      window.location.href = "http://localhost:3000";
+      window.location.href = "https://main.dphxll3jwggtr.amplifyapp.com/";
     } catch (err) {
       console.error("Logout failed", err);
     }
@@ -54,13 +57,12 @@ const Menu = () => {
       </Link>
       <div className="menus">
         <ul>
-          
           <li>
             <Link
               to="/Summary"
               onClick={() => handleMenuClick(0)}
               className={selectedMenu === 0 ? activeMenuClass : menuClass}
-              style={{ textDecoration: 'none' }} 
+              style={{ textDecoration: "none" }}
             >
               Summary
             </Link>
@@ -70,7 +72,7 @@ const Menu = () => {
               to="/orders"
               onClick={() => handleMenuClick(1)}
               className={selectedMenu === 1 ? activeMenuClass : menuClass}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               Orders
             </Link>
@@ -80,7 +82,7 @@ const Menu = () => {
               to="/holdings"
               onClick={() => handleMenuClick(2)}
               className={selectedMenu === 2 ? activeMenuClass : menuClass}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               Holdings
             </Link>
@@ -90,7 +92,7 @@ const Menu = () => {
               to="/positions"
               onClick={() => handleMenuClick(3)}
               className={selectedMenu === 3 ? activeMenuClass : menuClass}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               Positions
             </Link>
@@ -100,7 +102,7 @@ const Menu = () => {
               to="/funds"
               onClick={() => handleMenuClick(4)}
               className={selectedMenu === 4 ? activeMenuClass : menuClass}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               Funds
             </Link>
@@ -110,7 +112,7 @@ const Menu = () => {
               to="/apps"
               onClick={() => handleMenuClick(5)}
               className={selectedMenu === 5 ? activeMenuClass : menuClass}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               Apps
             </Link>
@@ -118,13 +120,13 @@ const Menu = () => {
         </ul>
         <hr />
         <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar" >
+          <div className="avatar">
             {user ? user.name.slice(0, 2).toUpperCase() : "??"}
           </div>
           <p className="username">{user ? user.name : "USER"}</p>
         </div>
         {isProfileDropdownOpen && (
-          <div className="profile-dropdown" >
+          <div className="profile-dropdown">
             <button onClick={handleLogout} className="btn btn-danger w-100">
               Logout
             </button>

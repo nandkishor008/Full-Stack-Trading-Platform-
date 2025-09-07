@@ -36,7 +36,7 @@ const Summary = () => {
       return;
     }
     try {
-      const res = await axios.post("http://localhost:3002/api/settle", {}, { withCredentials: true });
+      const res = await axios.post("http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/settle", {}, { withCredentials: true });
       await refreshData();
       alert(res.data.message);
     } catch (error) {

@@ -16,7 +16,7 @@ const SellActionWindow = ({ uid }) => {
       }
 
       await axios.post(
-        "http://localhost:3002/api/newOrder",
+        "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/newOrder",
         {
           name: uid,
           qty: Number(stockQuantity),
@@ -36,7 +36,10 @@ const SellActionWindow = ({ uid }) => {
   return (
     <div className="container" id="sell-window" draggable="true">
       <div className="regular-order">
-        <h2 className="modal-title" style={{ textAlign: "center", color: "#F44336" }}>
+        <h2
+          className="modal-title"
+          style={{ textAlign: "center", color: "#F44336" }}
+        >
           SELL {uid}
         </h2>
         <div className="inputs">
@@ -63,10 +66,18 @@ const SellActionWindow = ({ uid }) => {
       <div className="buttons">
         <span>Amount ₹{(stockQuantity * stockPrice).toFixed(2)}</span>
         <div>
-          <button className="btn btn-red" type="button" onClick={handleSellClick}>
+          <button
+            className="btn btn-red"
+            type="button"
+            onClick={handleSellClick}
+          >
             Sell
           </button>
-          <button className="btn btn-grey" type="button" onClick={closeSellWindow}>
+          <button
+            className="btn btn-grey"
+            type="button"
+            onClick={closeSellWindow}
+          >
             Cancel
           </button>
         </div>
