@@ -7,7 +7,7 @@ function Login() {
       <div className="card shadow" style={{ width: 380, borderRadius: 16, padding: 32 }}>
         <h2 className="mb-4 text-center" style={{ color: '#387ed1', fontWeight: 700 }}>Login to Zerodha</h2>
         
-        <form action="http://localhost:3002/login" method="POST">
+        <form action="http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/login" method="POST">
           
           <div className="mb-3">
             <label className="form-label fw-medium">Email</label>

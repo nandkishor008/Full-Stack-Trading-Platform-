@@ -18,7 +18,7 @@ export const GeneralContextProvider = (props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:3002/me", {
+        const res = await axios.get("http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/me", {
           withCredentials: true,
         });
         setUser(res.data);
@@ -36,9 +36,9 @@ export const GeneralContextProvider = (props) => {
     try {
       setLoading(true); // Set loading to true before fetching data
       const [h, p, o] = await Promise.all([
-        axios.get("http://localhost:3002/api/allHoldings", { withCredentials: true }),
-        axios.get("http://localhost:3002/api/allPositions", { withCredentials: true }),
-        axios.get("http://localhost:3002/api/orders", { withCredentials: true }),
+        axios.get("http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/allHoldings", { withCredentials: true }),
+        axios.get("http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/allPositions", { withCredentials: true }),
+        axios.get("http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/orders", { withCredentials: true }),
       ]);
       setHoldings(h.data);
       setPositions(p.data);
@@ -62,7 +62,7 @@ export const GeneralContextProvider = (props) => {
         return;
       }
       // Call the DELETE endpoint on your backend
-      await axios.delete(`http://localhost:3002/api/holdings/${holdingId}`, { withCredentials: true });
+      await axios.delete(`http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/holdings/${holdingId}`, { withCredentials: true });
       // Refresh all the data to update the UI
       await refreshData();
     } catch (error) {

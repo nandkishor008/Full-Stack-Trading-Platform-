@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: ['https://main.dphxll3jwggtr.amplifyapp.com/', 'https://main.d26ai6ejcpwzbx.amplifyapp.com/'],
     credentials: true
 }));
 
@@ -57,7 +57,7 @@ app.post('/signup', async (req, res) => {
         });
         
         // 3. Redirect directly to the dashboard
-        return res.redirect('http://localhost:3001/dashboard');
+        return res.redirect('https://main.d26ai6ejcpwzbx.amplifyapp.com/dashboard');
 
     } catch (err) {
         console.error("Server error during signup:", err);
@@ -82,7 +82,7 @@ app.post('/login', async (req, res) => {
         const token = createToken(user._id);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', maxAge: 24 * 60 * 60 * 1000 });
         
-        return res.redirect('http://localhost:3001/dashboard');
+        return res.redirect('https://main.d26ai6ejcpwzbx.amplifyapp.com/dashboard');
         
     } catch (err) {
         console.error("Server error during login:", err);
