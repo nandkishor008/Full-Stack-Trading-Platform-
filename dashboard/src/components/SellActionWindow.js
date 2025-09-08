@@ -4,7 +4,8 @@ import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
 // CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
-const API_BASE_URL = "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+const API_BASE_URL =
+  "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
 
 const SellActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
@@ -19,7 +20,7 @@ const SellActionWindow = ({ uid }) => {
       }
 
       await axios.post(
-        `${API_BASE_URL}/api/newOrder`,  // FIXED: Use HTTPS base URL
+        `${API_BASE_URL}/api/newOrder`, // FIXED: Use HTTPS base URL
         {
           name: uid,
           qty: Number(stockQuantity),

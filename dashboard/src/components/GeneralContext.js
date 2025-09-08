@@ -5,8 +5,8 @@ import SellActionWindow from "./SellActionWindow";
 
 const GeneralContext = createContext(null);
 
-// CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
-const API_BASE_URL = "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+// TEMPORARY FIX: Use HTTP backend for college demo
+const API_BASE_URL = "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
 
 export const GeneralContextProvider = (props) => {
   const [isBuyWindowOpen, setIsBuyWindowOpen] = useState(false);
@@ -21,16 +21,11 @@ export const GeneralContextProvider = (props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(
-          `${API_BASE_URL}/me`,  // FIXED: Use HTTPS base URL
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get(`${API_BASE_URL}/me`, { withCredentials: true });
         setUser(res.data);
       } catch (err) {
         console.error("User not authenticated.", err);
-        setLoading(false); // Stop loading if authentication fails
+        setLoading(false);
       }
     };
     fetchUser();
@@ -38,22 +33,12 @@ export const GeneralContextProvider = (props) => {
 
   const refreshData = async () => {
     if (!user) return;
-
     try {
-      setLoading(true); // Set loading to true before fetching data
+      setLoading(true);
       const [h, p, o] = await Promise.all([
-        axios.get(
-          `${API_BASE_URL}/api/allHoldings`,  // FIXED: Use HTTPS base URL
-          { withCredentials: true }
-        ),
-        axios.get(
-          `${API_BASE_URL}/api/allPositions`,  // FIXED: Use HTTPS base URL
-          { withCredentials: true }
-        ),
-        axios.get(
-          `${API_BASE_URL}/api/orders`,  // FIXED: Use HTTPS base URL
-          { withCredentials: true }
-        ),
+        axios.get(`${API_BASE_URL}/api/allHoldings`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/api/allPositions`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/api/orders`, { withCredentials: true }),
       ]);
       setHoldings(h.data);
       setPositions(p.data);
@@ -61,7 +46,7 @@ export const GeneralContextProvider = (props) => {
     } catch (error) {
       console.error("Error refreshing data:", error);
     } finally {
-      setLoading(false); // Set loading to false after fetching is complete
+      setLoading(false);
     }
   };
 
@@ -73,19 +58,8 @@ export const GeneralContextProvider = (props) => {
 
   const removeHolding = async (holdingId) => {
     try {
-      if (
-        !window.confirm(
-          "Are you sure you want to remove this holding? This action cannot be undone."
-        )
-      ) {
-        return;
-      }
-      // Call the DELETE endpoint on your backend
-      await axios.delete(
-        `${API_BASE_URL}/api/holdings/${holdingId}`,  // FIXED: Use HTTPS base URL
-        { withCredentials: true }
-      );
-      // Refresh all the data to update the UI
+      if (!window.confirm("Are you sure you want to remove this holding?")) return;
+      await axios.delete(`${API_BASE_URL}/api/holdings/${holdingId}`, { withCredentials: true });
       await refreshData();
     } catch (error) {
       console.error("Error removing holding:", error);

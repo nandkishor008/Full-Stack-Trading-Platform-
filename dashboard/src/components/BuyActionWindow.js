@@ -4,12 +4,13 @@ import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
 // CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
-const API_BASE_URL = "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+const API_BASE_URL =
+  "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
 
 const BuyActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
-  
+
   // Get the user object from the context
   const { closeBuyWindow, refreshData, user } = useContext(GeneralContext);
 
@@ -20,9 +21,9 @@ const BuyActionWindow = ({ uid }) => {
         alert("Please login to place an order.");
         return;
       }
-      
+
       await axios.post(
-        `${API_BASE_URL}/api/newOrder`,  // FIXED: Use HTTPS base URL
+        `${API_BASE_URL}/api/newOrder`, // FIXED: Use HTTPS base URL
         {
           name: uid,
           qty: Number(stockQuantity),
@@ -32,7 +33,7 @@ const BuyActionWindow = ({ uid }) => {
         // Send the session cookie with the request
         { withCredentials: true }
       );
-      
+
       await refreshData();
       closeBuyWindow();
     } catch (error) {
@@ -44,7 +45,10 @@ const BuyActionWindow = ({ uid }) => {
   return (
     <div className="container" id="buy-window" draggable="true">
       <div className="regular-order">
-        <h2 className="modal-title" style={{ textAlign: "center", color: "#4CAF50" }}>
+        <h2
+          className="modal-title"
+          style={{ textAlign: "center", color: "#4CAF50" }}
+        >
           BUY {uid}
         </h2>
         <div className="inputs">
@@ -71,10 +75,18 @@ const BuyActionWindow = ({ uid }) => {
       <div className="buttons">
         <span>Margin required ₹{(stockQuantity * stockPrice).toFixed(2)}</span>
         <div>
-          <button className="btn btn-blue" type="button" onClick={handleBuyClick}>
+          <button
+            className="btn btn-blue"
+            type="button"
+            onClick={handleBuyClick}
+          >
             Buy
           </button>
-          <button className="btn btn-grey" type="button" onClick={closeBuyWindow}>
+          <button
+            className="btn btn-grey"
+            type="button"
+            onClick={closeBuyWindow}
+          >
             Cancel
           </button>
         </div>

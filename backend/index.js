@@ -12,27 +12,52 @@ const apiRoutes = require("./routes/tradeRoutes");
 const app = express();
 
 // CRITICAL FIX 1: Add trust proxy setting for AWS Elastic Beanstalk
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // CRITICAL FIX 2: Environment-based configuration
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 // Updated CORS configuration
 app.use(
   cors({
-    origin: isProduction 
+    origin: isProduction
       ? [
           "https://main.dphxll3jwggtr.amplifyapp.com",
           "https://main.d26ai6ejcpwzbx.amplifyapp.com",
         ]
-      : ["http://localhost:3000"], // For local development
+      : ["http://localhost:3000"],
     credentials: true,
   })
 );
+
+// CRITICAL FIX 4: Add missing root route handler
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Zerodha Clone Backend API is running! 🚀",
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    endpoints: {
+      login: "/login",
+      signup: "/signup",
+      me: "/me",
+      api: "/api/*",
+    },
+  });
+});
+
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
+});
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -45,11 +70,11 @@ const createToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-// CRITICAL FIX 3: Updated cookie configuration function
+// TEMPORARY COOKIE SETTINGS FOR HTTP (FOR COLLEGE DEMO)
 const getCookieOptions = () => ({
   httpOnly: true,
-  sameSite: isProduction ? "none" : "lax",  // Critical fix for cross-domain
-  secure: isProduction,                     // Required for sameSite: "none"
+  sameSite: "lax",   // HTTP-compatible
+  secure: false,     // HTTP-compatible
   maxAge: 24 * 60 * 60 * 1000,
 });
 
@@ -70,8 +95,8 @@ app.post("/signup", async (req, res) => {
       password: hashedPassword,
     });
     const token = createToken(newUser._id);
-    
-    // FIXED: Use updated cookie options
+
+    // TEMPORARY: Set cookie over HTTP
     res.cookie("token", token, getCookieOptions());
 
     return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/summary");
@@ -93,8 +118,8 @@ app.post("/login", async (req, res) => {
       return res.status(400).send("Invalid credentials.");
     }
     const token = createToken(user._id);
-    
-    // FIXED: Use updated cookie options
+
+    // TEMPORARY: Set cookie over HTTP
     res.cookie("token", token, getCookieOptions());
 
     return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/summary");
@@ -121,5 +146,8 @@ app.get("/me", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// CRITICAL FIX 5: Use correct port for AWS EB
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});

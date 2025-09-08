@@ -20,7 +20,7 @@ function Login() {
 
         {/* FIXED: Changed from HTTP to HTTPS */}
         <form
-          action="https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/login"
+          action="http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/login"
           method="POST"
         >
           <div className="mb-3">

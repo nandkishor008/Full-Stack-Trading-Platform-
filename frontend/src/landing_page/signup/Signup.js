@@ -26,7 +26,7 @@ function Signup() {
 
         {/* FIXED: Changed from HTTP to HTTPS */}
         <form
-          action="https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/signup"
+          action="http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/signup"
           method="POST"
         >
           <div className="mb-3">
