@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import GeneralContext from "../GeneralContext"; // Make sure this path is correct
+import GeneralContext from "./GeneralContext";
 
 const Menu = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
