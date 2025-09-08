@@ -5,10 +5,9 @@ import axios from "axios";
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const { user } = useContext(GeneralContext);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // This logic fetches the user data and remains unchanged.
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -35,7 +34,6 @@ const Menu = () => {
     setIsProfileDropdownOpen((prev) => !prev);
   };
 
-  // This logout logic remains unchanged.
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -54,15 +52,14 @@ const Menu = () => {
 
   return (
     <div className="menu-container">
-      <Link to="/summary" style={{ textDecoration: "none" }}>
+      <Link to="/">
         <img src="/logo.png" style={{ width: "50px" }} alt="Logo" />
       </Link>
       <div className="menus">
         <ul>
-          {/* ✅ FIX: The onClick and className props are correctly applied to every link to use your state variables and remove warnings. */}
           <li>
             <Link
-              to="/summary"
+              to="/Summary"
               onClick={() => handleMenuClick(0)}
               className={selectedMenu === 0 ? activeMenuClass : menuClass}
               style={{ textDecoration: "none" }}
