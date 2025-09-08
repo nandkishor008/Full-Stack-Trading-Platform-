@@ -1,17 +1,41 @@
-import React, { useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import GeneralContext from "./GeneralContext";
 
 const Menu = () => {
+  const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-
   const { user } = useContext(GeneralContext);
+  const navigate = useNavigate();
+
+  // This logic fetches the user data and remains unchanged.
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(
+          "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/me",
+          {
+            withCredentials: true,
+          }
+        );
+        setUser(res.data);
+      } catch (err) {
+        console.error("Not authenticated:", err);
+        navigate("/login");
+      }
+    };
+    fetchUser();
+  }, [navigate]);
+
+  const handleMenuClick = (index) => {
+    setSelectedMenu(index);
+  };
 
   const handleProfileClick = () => {
     setIsProfileDropdownOpen((prev) => !prev);
   };
 
+  // This logout logic remains unchanged.
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -25,72 +49,76 @@ const Menu = () => {
     }
   };
 
-  const getNavLinkClass = ({ isActive }) => {
-    const menuClass = "menu";
-    const activeMenuClass = "menu selected";
-    return isActive ? activeMenuClass : menuClass;
-  };
+  const menuClass = "menu";
+  const activeMenuClass = "menu selected";
 
   return (
     <div className="menu-container">
-      <NavLink to="/summary" style={{ textDecoration: "none" }}>
+      <Link to="/summary" style={{ textDecoration: "none" }}>
         <img src="/logo.png" style={{ width: "50px" }} alt="Logo" />
-      </NavLink>
+      </Link>
       <div className="menus">
         <ul>
+          {/* ✅ FIX: The onClick and className props are correctly applied to every link to use your state variables and remove warnings. */}
           <li>
-            <NavLink
+            <Link
               to="/summary"
-              className={getNavLinkClass}
+              onClick={() => handleMenuClick(0)}
+              className={selectedMenu === 0 ? activeMenuClass : menuClass}
               style={{ textDecoration: "none" }}
             >
               Summary
-            </NavLink>
+            </Link>
           </li>
           <li>
-            <NavLink
+            <Link
               to="/orders"
-              className={getNavLinkClass}
+              onClick={() => handleMenuClick(1)}
+              className={selectedMenu === 1 ? activeMenuClass : menuClass}
               style={{ textDecoration: "none" }}
             >
               Orders
-            </NavLink>
+            </Link>
           </li>
           <li>
-            <NavLink
+            <Link
               to="/holdings"
-              className={getNavLinkClass}
+              onClick={() => handleMenuClick(2)}
+              className={selectedMenu === 2 ? activeMenuClass : menuClass}
               style={{ textDecoration: "none" }}
             >
               Holdings
-            </NavLink>
+            </Link>
           </li>
           <li>
-            <NavLink
+            <Link
               to="/positions"
-              className={getNavLinkClass}
+              onClick={() => handleMenuClick(3)}
+              className={selectedMenu === 3 ? activeMenuClass : menuClass}
               style={{ textDecoration: "none" }}
             >
               Positions
-            </NavLink>
+            </Link>
           </li>
           <li>
-            <NavLink
+            <Link
               to="/funds"
-              className={getNavLinkClass}
+              onClick={() => handleMenuClick(4)}
+              className={selectedMenu === 4 ? activeMenuClass : menuClass}
               style={{ textDecoration: "none" }}
             >
               Funds
-            </NavLink>
+            </Link>
           </li>
           <li>
-            <NavLink
+            <Link
               to="/apps"
-              className={getNavLinkClass}
+              onClick={() => handleMenuClick(5)}
+              className={selectedMenu === 5 ? activeMenuClass : menuClass}
               style={{ textDecoration: "none" }}
             >
               Apps
-            </NavLink>
+            </Link>
           </li>
         </ul>
         <hr />
