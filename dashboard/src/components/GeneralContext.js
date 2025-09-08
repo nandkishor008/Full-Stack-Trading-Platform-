@@ -5,6 +5,9 @@ import SellActionWindow from "./SellActionWindow";
 
 const GeneralContext = createContext(null);
 
+// CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
+const API_BASE_URL = "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+
 export const GeneralContextProvider = (props) => {
   const [isBuyWindowOpen, setIsBuyWindowOpen] = useState(false);
   const [isSellWindowOpen, setIsSellWindowOpen] = useState(false);
@@ -19,7 +22,7 @@ export const GeneralContextProvider = (props) => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/me",
+          `${API_BASE_URL}/me`,  // FIXED: Use HTTPS base URL
           {
             withCredentials: true,
           }
@@ -40,15 +43,15 @@ export const GeneralContextProvider = (props) => {
       setLoading(true); // Set loading to true before fetching data
       const [h, p, o] = await Promise.all([
         axios.get(
-          "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/allHoldings",
+          `${API_BASE_URL}/api/allHoldings`,  // FIXED: Use HTTPS base URL
           { withCredentials: true }
         ),
         axios.get(
-          "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/allPositions",
+          `${API_BASE_URL}/api/allPositions`,  // FIXED: Use HTTPS base URL
           { withCredentials: true }
         ),
         axios.get(
-          "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/orders",
+          `${API_BASE_URL}/api/orders`,  // FIXED: Use HTTPS base URL
           { withCredentials: true }
         ),
       ]);
@@ -79,7 +82,7 @@ export const GeneralContextProvider = (props) => {
       }
       // Call the DELETE endpoint on your backend
       await axios.delete(
-        `http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/holdings/${holdingId}`,
+        `${API_BASE_URL}/api/holdings/${holdingId}`,  // FIXED: Use HTTPS base URL
         { withCredentials: true }
       );
       // Refresh all the data to update the UI

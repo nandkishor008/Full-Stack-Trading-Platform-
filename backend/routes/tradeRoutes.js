@@ -9,6 +9,17 @@ const { PositionsModel } = require("../model/PositionsModel");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// Environment-based configuration
+const isProduction = process.env.NODE_ENV === 'production';
+
+// FIXED: Updated cookie configuration function (same as main server)
+const getCookieOptions = () => ({
+  httpOnly: true,
+  sameSite: isProduction ? "none" : "lax",
+  secure: isProduction,
+  maxAge: 24 * 60 * 60 * 1000,
+});
+
 // Authentication Middleware
 const auth = (req, res, next) => {
   try {
@@ -96,10 +107,13 @@ router.get("/allPositions", auth, async (req, res) => {
     }
 });
 
-// LOGOUT ROUTE
+// FIXED: LOGOUT ROUTE - Updated with proper cookie clearing
 router.post("/logout", (req, res) => {
+    // Clear the cookie with the same options used to set it
     res.cookie('token', '', {
         httpOnly: true,
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction,
         expires: new Date(0) 
     });
     return res.status(200).json({ success: true, message: "Logged out successfully" });
@@ -112,7 +126,6 @@ router.post("/settle", auth, async (req, res) => {
     const currentPositions = await PositionsModel.find({ userId });
 
     for (const position of currentPositions) {
-
       let holding = await HoldingsModel.findOne({ userId, name: position.name });
 
       if (holding) {

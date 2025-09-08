@@ -1,19 +1,23 @@
-import React, { useContext, useMemo } from 'react';
-import GeneralContext from './GeneralContext';
-import axios from 'axios';
+import React, { useContext, useMemo } from "react";
+import GeneralContext from "./GeneralContext";
+import axios from "axios";
+
+// CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
+const API_BASE_URL =
+  "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
 
 // A helper function to format numbers into the k/L/Cr style
 const formatIndianCurrency = (num) => {
   if (num >= 10000000) {
-    return (num / 10000000).toFixed(2) + 'Cr';
+    return (num / 10000000).toFixed(2) + "Cr";
   }
   if (num >= 100000) {
-    return (num / 100000).toFixed(2) + 'L';
+    return (num / 100000).toFixed(2) + "L";
   }
   if (num >= 1000) {
-    return (num / 1000).toFixed(2) + 'k';
+    return (num / 1000).toFixed(2) + "k";
   }
-  return num ? num.toFixed(2) : '0.00';
+  return num ? num.toFixed(2) : "0.00";
 };
 
 const Summary = () => {
@@ -21,22 +25,47 @@ const Summary = () => {
 
   const holdingsSummary = useMemo(() => {
     if (!holdings || holdings.length === 0) {
-      return { investment: 0, currentValue: 0, totalPandL: 0, pAndLPercentage: 0 };
+      return {
+        investment: 0,
+        currentValue: 0,
+        totalPandL: 0,
+        pAndLPercentage: 0,
+      };
     }
-    const totalInvestment = holdings.reduce((acc, holding) => acc + holding.avg * holding.qty, 0);
-    const currentValue = holdings.reduce((acc, holding) => acc + holding.price * holding.qty, 0);
+    const totalInvestment = holdings.reduce(
+      (acc, holding) => acc + holding.avg * holding.qty,
+      0
+    );
+    const currentValue = holdings.reduce(
+      (acc, holding) => acc + holding.price * holding.qty,
+      0
+    );
     const totalPandL = currentValue - totalInvestment;
-    const pAndLPercentage = totalInvestment === 0 ? 0 : (totalPandL / totalInvestment) * 100;
+    const pAndLPercentage =
+      totalInvestment === 0 ? 0 : (totalPandL / totalInvestment) * 100;
 
-    return { investment: totalInvestment, currentValue, totalPandL, pAndLPercentage };
+    return {
+      investment: totalInvestment,
+      currentValue,
+      totalPandL,
+      pAndLPercentage,
+    };
   }, [holdings]);
 
   const handleSettleDay = async () => {
-    if (!window.confirm("Are you sure you want to settle the day? This will move all long positions to holdings and clear daily positions.")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to settle the day? This will move all long positions to holdings and clear daily positions."
+      )
+    ) {
       return;
     }
     try {
-      const res = await axios.post("http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/settle", {}, { withCredentials: true });
+      const res = await axios.post(
+        `${API_BASE_URL}/api/settle`, // FIXED: Use HTTPS base URL
+        {},
+        { withCredentials: true }
+      );
       await refreshData();
       alert(res.data.message);
     } catch (error) {
@@ -45,13 +74,12 @@ const Summary = () => {
     }
   };
 
-  
   if (loading) {
     return <div>Loading summary...</div>;
   }
 
   if (!user) {
-      return <div>Please log in to view your summary.</div>
+    return <div>Please log in to view your summary.</div>;
   }
 
   const isProfit = holdingsSummary.totalPandL >= 0;
@@ -64,7 +92,9 @@ const Summary = () => {
       </div>
 
       <div className="section">
-        <span><p>Equity</p></span>
+        <span>
+          <p>Equity</p>
+        </span>
         <div className="data">
           <div className="first">
             <h3>3.74k</h3>
@@ -72,47 +102,64 @@ const Summary = () => {
           </div>
           <hr />
           <div className="second">
-            <p>Margins used <span>0</span></p>
-            <p>Opening balance <span>3.74k</span></p>
+            <p>
+              Margins used <span>0</span>
+            </p>
+            <p>
+              Opening balance <span>3.74k</span>
+            </p>
           </div>
         </div>
         <hr className="divider" />
       </div>
 
       <div className="section">
-        <span><p>Holdings ({holdings.length})</p></span>
+        <span>
+          <p>Holdings ({holdings.length})</p>
+        </span>
         <div className="data">
           <div className="first">
-            <h3 className={isProfit ? 'profit' : 'loss'}>
+            <h3 className={isProfit ? "profit" : "loss"}>
               {formatIndianCurrency(holdingsSummary.totalPandL)}
-              <small>{isProfit ? '+' : ''}{holdingsSummary.pAndLPercentage.toFixed(2)}%</small>
+              <small>
+                {isProfit ? "+" : ""}
+                {holdingsSummary.pAndLPercentage.toFixed(2)}%
+              </small>
             </h3>
             <p>P&L</p>
           </div>
           <hr />
           <div className="second">
-            <p>Current Value <span>{formatIndianCurrency(holdingsSummary.currentValue)}</span></p>
-            <p>Investment <span>{formatIndianCurrency(holdingsSummary.investment)}</span></p>
+            <p>
+              Current Value{" "}
+              <span>{formatIndianCurrency(holdingsSummary.currentValue)}</span>
+            </p>
+            <p>
+              Investment{" "}
+              <span>{formatIndianCurrency(holdingsSummary.investment)}</span>
+            </p>
           </div>
         </div>
         <hr className="divider" />
       </div>
 
-      
       <div className="section">
-        <span><p>End of Day</p></span>
-        <p style={{ fontSize: '14px', color: '#666', margin: '10px 0' }}>
-          This will move all your open long positions to your holdings and clear your daily positions.
+        <span>
+          <p>End of Day</p>
+        </span>
+        <p style={{ fontSize: "14px", color: "#666", margin: "10px 0" }}>
+          This will move all your open long positions to your holdings and clear
+          your daily positions.
         </p>
-        <button 
-          onClick={handleSettleDay} 
-          style={{ 
-            backgroundColor: '#387ed1', 
-            color: 'white', 
-            border: 'none', 
-            padding: '10px 15px', 
-            borderRadius: '4px', 
-            cursor: 'pointer' 
+        <button
+          onClick={handleSettleDay}
+          style={{
+            backgroundColor: "#387ed1",
+            color: "white",
+            border: "none",
+            padding: "10px 15px",
+            borderRadius: "4px",
+            cursor: "pointer",
           }}
         >
           End of Day Settlement

@@ -10,24 +10,34 @@ const { UserModel } = require("./model/UserModel");
 const apiRoutes = require("./routes/tradeRoutes");
 
 const app = express();
+
+// CRITICAL FIX 1: Add trust proxy setting for AWS Elastic Beanstalk
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// CRITICAL FIX 2: Environment-based configuration
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Updated CORS configuration
 app.use(
   cors({
-    origin: [
-      "https://main.dphxll3jwggtr.amplifyapp.com/",
-      "https://main.d26ai6ejcpwzbx.amplifyapp.com/",
-    ],
+    origin: isProduction 
+      ? [
+          "https://main.dphxll3jwggtr.amplifyapp.com",
+          "https://main.d26ai6ejcpwzbx.amplifyapp.com",
+        ]
+      : ["http://localhost:3000"], // For local development
     credentials: true,
   })
 );
 
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB Error:", err));
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB Error:", err));
 
 app.use("/api", apiRoutes);
 
@@ -35,46 +45,42 @@ const createToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-// Signup Route
+// CRITICAL FIX 3: Updated cookie configuration function
+const getCookieOptions = () => ({
+  httpOnly: true,
+  sameSite: isProduction ? "none" : "lax",  // Critical fix for cross-domain
+  secure: isProduction,                     // Required for sameSite: "none"
+  maxAge: 24 * 60 * 60 * 1000,
+});
+
 app.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res.status(400).send("All fields are required.");
     }
-
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(400).send("Email is already registered.");
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Create the new user
     const newUser = await UserModel.create({
       name,
       email,
       password: hashedPassword,
     });
-
-    // 1. Create a token for the new user
     const token = createToken(newUser._id);
+    
+    // FIXED: Use updated cookie options
+    res.cookie("token", token, getCookieOptions());
 
-    // 2. Set the authentication cookie, logging them in
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    // 3. Redirect directly to the dashboard
-    return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/dashboard");
+    return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/summary");
   } catch (err) {
     console.error("Server error during signup:", err);
     res.status(500).send("Server error during signup.");
   }
 });
 
-// Login Route
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -82,27 +88,22 @@ app.post("/login", async (req, res) => {
     if (!user) {
       return res.status(400).send("Invalid credentials.");
     }
-
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return res.status(400).send("Invalid credentials.");
     }
-
     const token = createToken(user._id);
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    
+    // FIXED: Use updated cookie options
+    res.cookie("token", token, getCookieOptions());
 
-    return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/dashboard");
+    return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/summary");
   } catch (err) {
     console.error("Server error during login:", err);
     res.status(500).send("Server error during login.");
   }
 });
 
-// Get Current User Route
 app.get("/me", async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -121,4 +122,4 @@ app.get("/me", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

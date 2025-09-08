@@ -3,6 +3,9 @@ import axios from "axios";
 import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
+// CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
+const API_BASE_URL = "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+
 const SellActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
@@ -16,7 +19,7 @@ const SellActionWindow = ({ uid }) => {
       }
 
       await axios.post(
-        "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/newOrder",
+        `${API_BASE_URL}/api/newOrder`,  // FIXED: Use HTTPS base URL
         {
           name: uid,
           qty: Number(stockQuantity),
@@ -30,6 +33,7 @@ const SellActionWindow = ({ uid }) => {
       closeSellWindow();
     } catch (error) {
       console.error("Error placing sell order:", error);
+      alert("Error placing sell order. Please try again.");
     }
   };
 

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
+const API_BASE_URL = "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -12,7 +15,7 @@ const Menu = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/me",
+          `${API_BASE_URL}/me`,  // FIXED: Use HTTPS base URL
           {
             withCredentials: true,
           }
@@ -37,7 +40,7 @@ const Menu = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/logout",
+        `${API_BASE_URL}/api/logout`,  // FIXED: Use HTTPS base URL
         {},
         { withCredentials: true }
       );

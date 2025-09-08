@@ -3,6 +3,9 @@ import axios from "axios";
 import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
+// CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
+const API_BASE_URL = "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+
 const BuyActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
@@ -12,22 +15,21 @@ const BuyActionWindow = ({ uid }) => {
 
   const handleBuyClick = async () => {
     try {
-      //  Check for the user from context
+      // Check for the user from context
       if (!user) {
         alert("Please login to place an order.");
         return;
       }
       
-
       await axios.post(
-        "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/api/newOrder",
+        `${API_BASE_URL}/api/newOrder`,  // FIXED: Use HTTPS base URL
         {
           name: uid,
           qty: Number(stockQuantity),
           price: Number(stockPrice),
           mode: "BUY",
         },
-        //  Send the session cookie with the request
+        // Send the session cookie with the request
         { withCredentials: true }
       );
       
@@ -35,6 +37,7 @@ const BuyActionWindow = ({ uid }) => {
       closeBuyWindow();
     } catch (error) {
       console.error("Error placing buy order:", error);
+      alert("Error placing buy order. Please try again.");
     }
   };
 

@@ -24,8 +24,9 @@ function Signup() {
           Create your Zerodha account
         </h2>
 
+        {/* FIXED: Changed from HTTP to HTTPS */}
         <form
-          action="http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/signup"
+          action="https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/signup"
           method="POST"
         >
           <div className="mb-3">

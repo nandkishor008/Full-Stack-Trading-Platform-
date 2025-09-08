@@ -18,8 +18,9 @@ function Login() {
           Login to Zerodha
         </h2>
 
+        {/* FIXED: Changed from HTTP to HTTPS */}
         <form
-          action="http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/login"
+          action="https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com/login"
           method="POST"
         >
           <div className="mb-3">
@@ -59,7 +60,7 @@ function Login() {
         </form>
 
         <p className="text-center mt-3" style={{ fontSize: 14 }}>
-          Don’t have an account? <Link to="/signup">Sign up here</Link>
+          Don't have an account? <Link to="/signup">Sign up here</Link>
         </p>
       </div>
     </div>
