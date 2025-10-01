@@ -8,7 +8,7 @@ import Orders from "./Orders";
 import Positions from "./Positions";
 import Summary from "./Summary";
 import WatchList from "./WatchList";
-import { GeneralContextProvider, GeneralContext } from "./GeneralContext";
+import GeneralContext, { GeneralContextProvider } from "./GeneralContext";
 
 const Dashboard = () => {
   const { user, setUser } = useContext(GeneralContext);
