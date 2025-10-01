@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Apps from "./App";
 import Funds from "./Funds";
 import Holdings from "./Holdings";
 import Orders from "./Orders";
@@ -23,7 +22,6 @@ const Dashboard = () => {
             <Route path="/holdings" element={<Holdings />} />
             <Route path="/positions" element={<Positions />} />
             <Route path="/funds" element={<Funds />} />
-            <Route path="/app" element={<App />} />
             <Route path="*" element={<Navigate to="/summary" />} />
           </Routes>
         </div>
