@@ -10,6 +10,10 @@ import Summary from "./Summary";
 import WatchList from "./WatchList";
 import GeneralContext, { GeneralContextProvider } from "./GeneralContext";
 
+// Define API_BASE_URL for API calls
+const API_BASE_URL =
+  "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+
 const Dashboard = () => {
   const { user, setUser } = useContext(GeneralContext);
 
