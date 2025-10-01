@@ -19,6 +19,7 @@ export const GeneralContextProvider = (props) => {
   const [isSellWindowOpen, setIsSellWindowOpen] = useState(false);
   const [selectedStockUID, setSelectedStockUID] = useState("");
 
+  // Ensure user data is fetched properly and errors are handled
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -26,7 +27,10 @@ export const GeneralContextProvider = (props) => {
           withCredentials: true,
         });
         setUser(res.data);
-      } catch {
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setUser(null); // Ensure user is set to null on error
+      } finally {
         setLoading(false);
       }
     };
