@@ -5,7 +5,7 @@ import "./BuyActionWindow.css";
 
 // CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
 const API_BASE_URL =
-  "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+  "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
 
 const SellActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
