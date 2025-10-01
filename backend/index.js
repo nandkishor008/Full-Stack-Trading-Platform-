@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt"); // Updated from bcryptjs
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ FIX: Use the exact live URLs from AWS Amplify
+// Enhanced CORS Configuration
 app.use(
   cors({
     origin: [
@@ -97,25 +97,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Get Current User Route
-app.get("/me", async (req, res) => {
+// Debugging logs for /me endpoint
+app.get("/me", (req, res) => {
   try {
-    console.log("Token received:", req.cookies.token); // Debugging log for token
-    const token = req.cookies.token;
+    const token = req.cookies?.token;
     if (!token) {
-      return res.status(401).json({ message: "Not authenticated" });
+      console.error("/me endpoint: No token provided");
+      return res.status(401).json({ error: "Not authenticated" });
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded token:", decoded); // Debugging log for decoded token
-    const user = await UserModel.findById(decoded.id).select("-password");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    console.log("User fetched:", user); // Debugging log for fetched user
-    res.json(user);
+    console.log("/me endpoint: Token decoded successfully", decoded);
+    res.json({ userId: decoded.id });
   } catch (err) {
-    console.error("Error in /me endpoint:", err); // Debugging log for errors
-    return res.status(401).json({ message: "Invalid token" });
+    console.error("/me endpoint error:", err.message);
+    res.status(401).json({ error: "Invalid or expired token" });
   }
 });
 
