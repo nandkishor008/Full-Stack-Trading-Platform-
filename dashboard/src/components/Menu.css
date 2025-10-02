@@ -5,24 +5,44 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-}
-.profile-dropdown {
-  position: absolute;
-  right: 30px;
-  top: 60px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background-color: #f9f9f9; 
+  padding: 5px 12px;
   border-radius: 8px;
-  padding: 14px;
+  min-width: 120px; 
+  box-sizing: border-box;
   z-index: 100;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .avatar {
   background: #d9e6f7;
   padding: 9px;
   border-radius: 50%;
   margin-right: 10px;
   font-weight: bold;
+  flex-shrink: 0;
+  width: 36px; 
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .username {
   font-weight: bold;
+  overflow: hidden;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 30px;
+  top: 60px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 14px;
+  z-index: 101;
+  min-width: 160px;
 }
