@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt"); // Updated from bcryptjs
+const bcrypt = require("bcrypt"); 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -14,7 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Enhanced CORS Configuration
 app.use(
   cors({
     origin: [
@@ -73,11 +72,11 @@ app.post("/signup", async (req, res) => {
     const token = createToken(newUser._id);
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    // ✅ FIX: Redirect to the correct page on your live dashboard
     return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/summary");
   } catch (err) {
     console.error("Server error during signup:", err);
@@ -100,11 +99,12 @@ app.post("/login", async (req, res) => {
     const token = createToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    // ✅ FIX: Redirect to the correct page on your live dashboard
+    //  Redirect to the correct page on your live dashboard
     return res.redirect("https://main.d26ai6ejcpwzbx.amplifyapp.com/summary");
   } catch (err) {
     console.error("Server error during login:", err);
