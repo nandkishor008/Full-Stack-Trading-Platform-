@@ -4,7 +4,7 @@ import axios from "axios";
 
 // CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
 const API_BASE_URL =
-  "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+  "https://full-stack-trading-platform.onrender.com";
 
 // A helper function to format numbers into the k/L/Cr style
 const formatIndianCurrency = (num) => {

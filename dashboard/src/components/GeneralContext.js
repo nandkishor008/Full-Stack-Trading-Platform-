@@ -7,7 +7,7 @@ const GeneralContext = createContext(null);
 
 // DEMO: Use HTTP backend
 const API_BASE_URL =
-  "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+  "https://full-stack-trading-platform.onrender.com";
 
 export const GeneralContextProvider = (props) => {
   const [user, setUser] = useState(null);
