@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import './Menu.css';
 
-// CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
+
 const API_BASE_URL = "https://full-stack-trading-platform.onrender.com";
 
 const Menu = () => {
@@ -122,15 +123,62 @@ const Menu = () => {
           </li>
         </ul>
         <hr />
-        <div className="profile" onClick={handleProfileClick}>
+        <div
+          className="profile"
+          onClick={handleProfileClick}
+          style={{
+            cursor: "pointer",
+            userSelect: "none",
+            position: "absolute",
+            right: "30px",
+            top: "20px",
+          }}
+        >
           <div className="avatar">
             {user && user.name ? user.name.slice(0, 2).toUpperCase() : "??"}
           </div>
-          <p className="username">{user ? user.name : "USER"}</p>
+          <p className="username">{user && user.name ? user.name : "USER"}</p>
         </div>
         {isProfileDropdownOpen && (
-          <div className="profile-dropdown">
-            <button onClick={handleLogout} className="btn btn-danger w-100">
+          <div
+            className="profile-dropdown"
+            style={{
+              position: "absolute",
+              right: "30px",
+              top: "60px",
+              background: "#fff",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+              borderRadius: "8px",
+              padding: "14px",
+              zIndex: 100,
+            }}
+          >
+            <div
+              style={{
+                marginBottom: "8px",
+                fontWeight: "bold",
+                fontSize: "16px",
+              }}
+            >
+              {user && user.name ? user.name : "USER"}
+            </div>
+            <div
+              style={{ color: "#888", marginBottom: "12px", fontSize: "14px" }}
+            >
+              {user && user.email ? user.email : ""}
+            </div>
+            <button
+              onClick={handleLogout}
+              style={{
+                backgroundColor: "#d9534f",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                padding: "8px 20px",
+                width: "100%",
+                cursor: "pointer",
+              }}
+            >
               Logout
             </button>
           </div>

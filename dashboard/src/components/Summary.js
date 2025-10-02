@@ -3,8 +3,7 @@ import GeneralContext from "./GeneralContext";
 import axios from "axios";
 
 // CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
-const API_BASE_URL =
-  "https://full-stack-trading-platform.onrender.com";
+const API_BASE_URL = "https://full-stack-trading-platform.onrender.com";
 
 // A helper function to format numbers into the k/L/Cr style
 const formatIndianCurrency = (num) => {
@@ -87,7 +86,7 @@ const Summary = () => {
   return (
     <>
       <div className="username">
-        <h6>Hi, {user.name}!</h6>
+        <h6>Hi{user && user.name ? `, ${user.name}` : ""}</h6>
         <hr className="divider" />
       </div>
 

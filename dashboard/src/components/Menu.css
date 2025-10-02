@@ -1,0 +1,28 @@
+.profile {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.profile-dropdown {
+  position: absolute;
+  right: 30px;
+  top: 60px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 14px;
+  z-index: 100;
+}
+.avatar {
+  background: #d9e6f7;
+  padding: 9px;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-weight: bold;
+}
+.username {
+  font-weight: bold;
+}
