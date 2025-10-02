@@ -30,6 +30,21 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Error:", err));
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Zerodha Clone Backend API is running! 🚀",
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    endpoints: {
+      login: "/login",
+      signup: "/signup",
+      me: "/me",
+      api: "/api/*",
+    },
+  });
+});
+
 app.use("/api", apiRoutes);
 
 const createToken = (userId) => {
