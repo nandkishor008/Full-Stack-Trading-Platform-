@@ -11,7 +11,7 @@ import WatchList from "./WatchList";
 import GeneralContext, { GeneralContextProvider } from "./GeneralContext";
 
 const API_BASE_URL =
-  "https://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
+  "http://zerodha-clone-env.eba-umbwwcgx.eu-north-1.elasticbeanstalk.com";
 
 const Dashboard = () => {
   const { user, setUser } = useContext(GeneralContext);
