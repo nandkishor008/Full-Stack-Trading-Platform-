@@ -18,7 +18,7 @@ function Login() {
           Login to Zerodha
         </h2>
 
-        {/* FIXED: Changed from HTTP to HTTPS */}
+        
         <form
           action="https://full-stack-trading-platform.onrender.com/login"
           method="POST"

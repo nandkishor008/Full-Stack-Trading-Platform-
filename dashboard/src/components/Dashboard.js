@@ -18,28 +18,28 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
-      const fetchUser = async () => {
-        try {
-          const res = await axios.get(`${API_BASE_URL}/me`, {
-            withCredentials: true,
-          });
-          setUser(res.data);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          if (error.response && error.response.status === 401) {
-            navigate("/login");
-          } else {
-            alert("A network error occurred. Please try again later.");
-          }
+  if (!user) {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/me`, {
+          withCredentials: true,
+        });
+        setUser(res.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        } else {
+          alert("A network error occurred.");
         }
-      };
-      fetchUser();
-    }
-  }, [user, setUser, navigate]);
+      }
+    };
+    fetchUser();
+  }
+}, [navigate]);  
 
   return (
-    <GeneralContextProvider>
+    
       <div className="dashboard-container">
         <WatchList />
 
@@ -55,7 +55,7 @@ const Dashboard = () => {
           </Routes>
         </div>
       </div>
-    </GeneralContextProvider>
+    
   );
 };
 

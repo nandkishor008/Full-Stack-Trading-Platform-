@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // CRITICAL FIX: Use HTTPS instead of HTTP for all API calls
-const API_BASE_URL =
-  "https://full-stack-trading-platform.onrender.com";
+const API_BASE_URL = "https://full-stack-trading-platform.onrender.com";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
@@ -125,7 +124,7 @@ const Menu = () => {
         <hr />
         <div className="profile" onClick={handleProfileClick}>
           <div className="avatar">
-            {user ? user.name.slice(0, 2).toUpperCase() : "??"}
+            {user && user.name ? user.name.slice(0, 2).toUpperCase() : "??"}
           </div>
           <p className="username">{user ? user.name : "USER"}</p>
         </div>
